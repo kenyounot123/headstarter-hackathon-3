@@ -1,16 +1,18 @@
 import React, { useState } from 'react';
 import { Button } from './ui/button';
-
+import { Comment } from '@/types';
 interface CommentFormProps {
   onCancel: () => void;
+  comments: Comment[];
+  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
 }
 
-function CommentForm({ onCancel }: CommentFormProps) {
+function CommentForm({ onCancel, comments, setComments }: CommentFormProps) {
   const [comment, setComment] = useState('');
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission
+    // Handle form submission save comments using setComments and save in db as well.
     setComment('');
   };
 

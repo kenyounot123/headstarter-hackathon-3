@@ -7,11 +7,7 @@ import Image from "next/image"
 import { useState, useRef } from "react"
 import { HighlightMenu, MenuButton } from "react-highlight-menu";
 import Highlight from "react-highlighter"
-type Comment = {
-  username: string;
-  userComment: string;
-  highlightedText: string;
-};
+import { Comment } from "@/types"
 
 export default function Transcript() {
   const [transcript, setTranscript] = useState(transcriptData);
@@ -112,7 +108,7 @@ export default function Transcript() {
         )}
       />
       <div ref={commentFormRef} style={{ display: 'none', zIndex:999}}>
-        <CommentForm onCancel={handleCancel}/>
+        <CommentForm onCancel={handleCancel} comments={comments} setComments={setComments}/>
       </div>
       <div className="relative flex-1 bg-gray-100 p-4 border-b md:border-r md:border-gray-300">
         <h2 className="text-2xl font-semibold mb-4">Main Transcript</h2>
@@ -140,7 +136,7 @@ export default function Transcript() {
           <button onClick={() => setSection('comments')}  className={`${section === 'comments' && 'border-b-2'} border-primary text-2xl font-semibold`}>Comments</button>
         </div>
         {section === 'chatbot' && <ChatbotSection/>}
-        {section === 'comments' && <CommentSection/>}
+        {section === 'comments' && <CommentSection comments={comments} setComments={setComments}/>}
       </div>
     </section>
   )
