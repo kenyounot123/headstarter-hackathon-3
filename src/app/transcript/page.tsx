@@ -18,7 +18,6 @@ export default function Transcript() {
   const [section, setSection] = useState<'comments' | 'chatbot'>('chatbot')
   const [highlightedText, setHighlightedText] = useState<string>("")
   const [comments, setComments] = useState<Comment[]>([])
-  const [displayForm, setDisplayForm] = useState<boolean>(false)
   const commentFormRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
@@ -113,7 +112,7 @@ export default function Transcript() {
         )}
       />
       <div ref={commentFormRef} style={{ display: 'none', zIndex:999}}>
-        <CommentForm onSubmit={(str) => str} onCancel={handleCancel}/>
+        <CommentForm onCancel={handleCancel}/>
       </div>
       <div className="relative flex-1 bg-gray-100 p-4 border-b md:border-r md:border-gray-300">
         <h2 className="text-2xl font-semibold mb-4">Main Transcript</h2>
