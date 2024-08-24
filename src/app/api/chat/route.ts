@@ -99,3 +99,7 @@ export async function POST(req: NextRequest) {
 
   return new NextResponse(stream);
 }
+
+// export async function GET(req: NextRequest) {
+//   return new NextResponse("hello");
+// }

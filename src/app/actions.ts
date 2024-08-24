@@ -1,10 +1,17 @@
 "use server";
 
 import { Comment } from "@/types";
+import { auth } from "@clerk/nextjs/server";
 
 console.log(process.env.AWS_URL);
 
 export async function createComment({ comment }: { comment: Comment }) {
+  const { userId } = auth();
+  if (!userId) {
+    throw new Error("Not authenticated");
+  }
+  comment.user_id = userId;
+  
   const response = await fetch(`${process.env.AWS_URL!}/items`, {
     method: "PUT",
     headers: {
