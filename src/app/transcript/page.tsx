@@ -172,6 +172,12 @@ export default function Transcript() {
                 onChange={(e) =>
                   setCommentForm({ ...commentForm, comment: e.target.value })
                 }
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    handleCommentFormSubmit(e);
+                  }
+                }}
                 className="w-full h-32 p-2 border border-gray-300 rounded-md"
               ></Textarea>
             </form>
