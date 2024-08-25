@@ -32,7 +32,7 @@ export default function CommentSection({
         {comments.map((comment, index) => (
           <div 
             key={index} 
-            className={`p-4 rounded-lg shadow-sm transition duration-200 ${
+            className={`cursor-pointer p-4 rounded-lg shadow-sm transition duration-200 ${
               hoveredComment?.id === comment.id ? 'bg-blue-100' : 'bg-gray-100'
             }`}
             onMouseEnter={() => setHoveredComment(comment)}
