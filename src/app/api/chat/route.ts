@@ -25,7 +25,6 @@ export async function POST(req: NextRequest) {
   }
   
   const latestMessage = messageData
-  console.log(latestMessage)
   //   const createdQueryEmbedding = await openai.embeddings.create({
   //     input: latestMessage.content,
   //     model: "text-embedding-3-small",

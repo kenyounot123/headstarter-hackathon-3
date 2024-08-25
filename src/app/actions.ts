@@ -18,13 +18,10 @@ export async function createComment(comment: Comment) {
     },
     body: JSON.stringify(comment),
   });
-  console.log(JSON.stringify(comment));
   if (!response.ok) {
-    console.log(response);
     throw new Error("Failed to create comment");
   }
   const data = await response.json();
-  console.log(data);
   return data;
 }
 
@@ -35,7 +32,6 @@ export async function getComments() {
     throw new Error("Failed to get comments");
   }
   const data = await response.json();
-  console.log(data);
   return data;
 }
 
@@ -45,7 +41,6 @@ export async function getComment(id: string) {
     throw new Error("Failed to get comment");
   }
   const data = await response.json();
-  console.log(data);
   return data;
 }
 
@@ -57,6 +52,5 @@ export async function deleteComment(id: string) {
     throw new Error("Failed to delete comment");
   }
   const data = await response.json();
-  console.log(data);
   return data;
 }
