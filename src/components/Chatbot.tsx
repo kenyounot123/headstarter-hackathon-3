@@ -1,6 +1,14 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useState, useRef, useEffect, ReactHTML } from "react";
+import { useUser } from "@clerk/nextjs";
+import Markdown from 'react-markdown'
+import { DbComment } from "@/types";
 
+interface ChatbotProps {
+  messages: string[];
+  setMessages: React.Dispatch<React.SetStateAction<string[]>>
+  comments: DbComment[];
+}
 function BotMessage({ message }: { message: string }) {
   return (
     <>
@@ -12,7 +20,7 @@ function BotMessage({ message }: { message: string }) {
         <div className="flex flex-col space-y-2">
           <div className="font-semibold text-blue-800">AI Chatbot</div>
           <div className="bg-blue-100 text-blue-800 p-3 rounded-lg w-full">
-            <p>{message}</p>
+            <Markdown>{message}</Markdown>
           </div>
         </div>
       </div>
@@ -21,11 +29,12 @@ function BotMessage({ message }: { message: string }) {
 }
 
 function UserMessage({ message }: { message: string }) {
+  const { isLoaded, isSignedIn, user } = useUser();
   return (
     <>
       <div className="flex flex-row-reverse items-start space-x-3 mb-4">
         <Avatar>
-          <AvatarImage src="https://github.com/shadcn.png" />
+          <AvatarImage src={`${user ? user.imageUrl : ''}`} />
           <AvatarFallback>You</AvatarFallback>
         </Avatar>
         <div className="flex flex-col space-y-2 pr-2">
@@ -41,8 +50,7 @@ function UserMessage({ message }: { message: string }) {
 
 const initialMessages = ["Hi there! How can I assist you today?"];
 
-export default function ChatbotSection() {
-  const [messages, setMessages] = useState<string[]>(initialMessages);
+export default function ChatbotSection({messages, setMessages, comments}: ChatbotProps) {
   const [message, setMessage] = useState<string>("");
   const [isLoading, setIsLoading] = useState(false);
   const messagesEndRef = useRef(null);
@@ -74,7 +82,7 @@ export default function ChatbotSection() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(message),
+        body: JSON.stringify({messageData: message, comments: comments }),
       });
       if (!response.ok) {
         throw new Error("Network response was not ok");
