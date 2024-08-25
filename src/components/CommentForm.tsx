@@ -37,26 +37,26 @@ function CommentForm({
       transcript_id: "1",
       transcript_text: highlightedText,
       comment: comment,
-    }
+    };
 
     try {
       await createComment(newComment);
-      // Handle form submission save comments using setComments and save in db as well.
+      setComments([
+        ...comments,
+        {
+          id: randomb64(),
+          user_id: "You",
+          transcript_id: "1",
+          transcript_text: highlightedText,
+          comment: comment,
+        },
+      ]);
     } catch (e: any) {
-      alert(e.message)
+      alert(e.message);
     }
 
     setComment("");
-    setComments([...comments, {
-      id: randomb64(),
-      user_id: "You",
-      transcript_id: "1",
-      transcript_text: highlightedText,
-      comment: comment,
-    }
-    ]);
   };
-
 
   const handleCancel = (e: React.FormEvent) => {
     e.preventDefault();
