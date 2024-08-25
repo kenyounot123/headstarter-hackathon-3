@@ -4,21 +4,25 @@ import ChatbotSection from "@/components/Chatbot"
 import CommentSection from "@/components/Comment"
 import CommentForm from "@/components/CommentForm"
 import Image from "next/image"
-import { useState, useRef } from "react"
+import { useState, useRef, useEffect } from "react"
 import { HighlightMenu, MenuButton } from "react-highlight-menu";
 import Highlight from "react-highlighter"
 import { Comment } from "@/types"
+import { getComments } from "@/app/actions";
 
 export default function Transcript() {
   const [transcript, setTranscript] = useState(transcriptData);
   const [section, setSection] = useState<'comments' | 'chatbot'>('chatbot')
   const [highlightedText, setHighlightedText] = useState<string>("")
   const [comments, setComments] = useState<Comment[]>([])
+  const [selectedText, setSelectedText] = useState<string>("")
   const commentFormRef = useRef<HTMLDivElement | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
 
   const getSelectedTextPosition = () => {
     const selection = window.getSelection();
+    console.log(selection?.toString())
+    setSelectedText(selection?.toString() || "")
 
     if (selection && selection.rangeCount > 0) {
       // Get the range of the selected text
@@ -62,6 +66,12 @@ export default function Transcript() {
       commentFormRef.current.style.setProperty('display', 'none');
     }
   }
+
+  useEffect(() => {
+    getComments().then((comments) => {
+      setComments(comments)
+    })
+  }, [])
 
   return(
     <section className="flex flex-col md:flex-row w-[95%] h-[800px] mx-auto mt-10">
@@ -108,7 +118,7 @@ export default function Transcript() {
         )}
       />
       <div ref={commentFormRef} style={{ display: 'none', zIndex:999}}>
-        <CommentForm onCancel={handleCancel} comments={comments} setComments={setComments}/>
+        <CommentForm onCancel={handleCancel} comments={comments} setComments={setComments} highlightedText={selectedText}/>
       </div>
       <div className="relative flex-1 bg-gray-100 p-4 border-b md:border-r md:border-gray-300">
         <h2 className="text-2xl font-semibold mb-4">Main Transcript</h2>
