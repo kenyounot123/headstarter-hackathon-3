@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from "next/server"; // Import NextResponse 
 import OpenAI from "openai";
 import transcript from "@/app/dummy-data";
 
-export const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const systemPrompt = `
 You are an AI assistant specialized in providing users with insights on a conversation transcript that will be provided to you. 
