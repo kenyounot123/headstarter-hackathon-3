@@ -17,16 +17,15 @@ Maintain a helpful, professional, and friendly tone, and aim to ensure that each
 // POST function to handle incoming requests
 export async function POST(req: NextRequest) {
   const messageData = await req.json(); // Parse the JSON body of the incoming request ( this would be the user's message to the bot )
+
   // convert the user's input to an embedding so that we can compare its similarity with the embeddings in our pinecone database
   // Process user query -> create embedding from it -> query pinecone for similarities -> format results
   if (!messageData || messageData.length === 0) {
     return new Response("No message data provided", { status: 400 });
   }
-  const latestMessage = messageData[messageData.length - 1];
-  if (!latestMessage || !latestMessage.content) {
-    return new Response("Invalid message format", { status: 400 });
-  }
-
+  
+  const latestMessage = messageData
+  console.log(latestMessage)
   //   const createdQueryEmbedding = await openai.embeddings.create({
   //     input: latestMessage.content,
   //     model: "text-embedding-3-small",
@@ -60,7 +59,7 @@ export async function POST(req: NextRequest) {
     .map((entry, index) => `${entry.time} - ${entry.name}:\n${entry.dialogue}`)
     .join("\n\n")}
   -------
-  MY QUESTION:\n${latestMessage.content}
+  MY QUESTION:\n${latestMessage}
   `;
 
   console.log(augmentedQuery);
