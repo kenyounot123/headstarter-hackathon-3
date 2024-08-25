@@ -3,14 +3,13 @@
 import { Comment } from "@/types";
 import { auth } from "@clerk/nextjs/server";
 
-console.log(process.env.AWS_URL);
+// console.log(process.env.AWS_URL);
 
 export async function createComment(comment: Comment) {
   const { userId } = auth();
   if (!userId) {
     throw new Error("Not authenticated");
   }
-  comment.user_id = userId;
 
   const response = await fetch(`${process.env.AWS_URL!}/items`, {
     method: "PUT",
@@ -32,6 +31,7 @@ export async function createComment(comment: Comment) {
 export async function getComments() {
   const response = await fetch(`${process.env.AWS_URL!}/items`);
   if (!response.ok) {
+    console.log(response);
     throw new Error("Failed to get comments");
   }
   const data = await response.json();

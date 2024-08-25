@@ -58,7 +58,6 @@ export default function ChatbotSection() {
 
   const sendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(message, messages);
 
     if (!message.trim() || isLoading) return;
     setIsLoading(true);

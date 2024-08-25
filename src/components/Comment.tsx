@@ -1,39 +1,22 @@
-import { Comment } from "@/types";
+import { DbComment } from "@/types";
 import { deleteComment } from "@/app/actions";
 import { DeleteIcon } from "lucide-react";
 
 interface CommentSectionProps {
-  comments: Comment[];
-  setComments: React.Dispatch<React.SetStateAction<Comment[]>>;
+  comments: DbComment[];
+  hoveredComment: DbComment | null;
+  setComments: React.Dispatch<React.SetStateAction<DbComment[]>>;
+  setHoveredComment: React.Dispatch<React.SetStateAction<DbComment | null>>;
+  scrollToMessage: (messageId: string) => void;
 }
+
 export default function CommentSection({
   comments,
   setComments,
+  hoveredComment,
+  setHoveredComment,
+  scrollToMessage,
 }: CommentSectionProps) {
-  // // Sample dummy comments
-  // const dummyComments: Comment[] = [
-  //   {
-  //     id: "1",
-  //     transcript_id: '1',
-  //     user_id: 'Alice',
-  //     comment: 'Great point on increasing sales during the holiday season!',
-  //     transcript_text: 'Increase sales during the holiday season',
-  //   },
-  //   {
-  //     id: "2",
-  //     transcript_id: '2',
-  //     user_id: 'Alice',
-  //     comment: 'Great point on increasing sales during the holiday season!',
-  //     transcript_text: 'Increase sales during the holiday season',
-  //   },
-  //   {
-  //     id: "3",
-  //     transcript_id: '3',
-  //     user_id: 'Alice',
-  //     comment: 'Great point on increasing sales during the holiday season!',
-  //     transcript_text: 'Increase sales during the holiday season',
-  //   },
-  // ];
   async function handleDeleteComment(commentId: string) {
     try {
       await deleteComment(commentId);
@@ -47,13 +30,21 @@ export default function CommentSection({
     <div className="flex flex-col h-[720px] bg-white border border-gray-300 rounded-lg shadow-md">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">
         {comments.map((comment, index) => (
-          <div key={index} className="p-4 rounded-lg shadow-sm bg-gray-100">
+          <div 
+            key={index} 
+            className={`p-4 rounded-lg shadow-sm transition duration-200 ${
+              hoveredComment?.id === comment.id ? 'bg-blue-100' : 'bg-gray-100'
+            }`}
+            onMouseEnter={() => setHoveredComment(comment)}
+            onMouseLeave={() => setHoveredComment(null)}
+            onClick={() => scrollToMessage(comment.message_id)}
+          >
             <div className="font-semibold text-blue-800 mb-2">
-              {comment.user_id}
+              {comment.user_fullname}
             </div>
             <div className="mb-2">
               <span className="font-bold text-gray-700">Highlighted:</span>{" "}
-              {comment.transcript_text}
+              {comment.highlighted_message}
             </div>
             <div className="text-gray-800">
               <span className="font-bold text-gray-700">Comment:</span>{" "}
