@@ -102,7 +102,6 @@ export function TranscriptMessage({
                 title="Highlight"
                 style={{ backgroundColor: "#5E6BF1" }}
                 onClick={() => {
-                  console.log(selectedText);
                   setHighlightedText([...highlightedText, selectedText]);
                 }}
               >
@@ -119,10 +118,6 @@ export function TranscriptMessage({
                 title="Add Comment"
                 onClick={() => {
                   setMenuOpen(false);
-                  // Display a floating form with a text field where
-                  // users can input a comment
-                  // Comment get saved in DB and then is displayed in the
-                  // comment section
                   openCommentFormWith({
                     user_fullname: "",
                     message_id: message.id,
