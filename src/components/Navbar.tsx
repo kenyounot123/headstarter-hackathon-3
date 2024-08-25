@@ -28,9 +28,7 @@ export default function Navbar() {
           </SignInButton>
         </SignedOut>
         <SignedIn>
-          <UserButton>
-            <Button>Log Out</Button>
-          </UserButton>
+          <UserButton/>
         </SignedIn>
       </div>
     </nav>
