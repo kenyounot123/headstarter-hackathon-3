@@ -5,6 +5,7 @@ import Navbar from "@/components/Navbar";
 import {
   ClerkProvider
 } from "@clerk/nextjs";
+import { Analytics } from "@vercel/analytics/react"
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -25,6 +26,7 @@ export default function RootLayout({
         <body className={inter.className}>
           <Navbar />
           {children}
+          <Analytics/>
         </body>
       </html>
     </ClerkProvider>
