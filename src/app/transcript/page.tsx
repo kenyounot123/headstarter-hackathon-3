@@ -20,6 +20,7 @@ import {
 import { useUser } from "@clerk/nextjs";
 import { createComment } from "@/app/actions";
 import { Textarea } from "@/components/ui/textarea";
+import { useRouter } from "next/navigation";
 
 const emptyCommentForm: Comment = {
   user_fullname: "",
@@ -28,41 +29,18 @@ const emptyCommentForm: Comment = {
   comment: "",
 };
 
-const testComments: DbComment[] = [
-  // {
-  //   comment: 'We are using Clerk for user authentication',
-  //   message_id: '7',
-  //   id: '15a0d481-a473-4acb-ac9f-b84218e91cf7',
-  //   highlighted_message: 'data security?',
-  //   transcript_id: '1',
-  //   user_fullname: 'Kevin Zhu'
-  // },
-  // {
-  //   comment: 'Hello world!',
-  //   message_id: '0',
-  //   id: '4984f8fd-b47d-4f83-ab6c-0952a72cdb4b',
-  //   highlighted_message: 'Hello',
-  //   transcript_id: '1',
-  //   user_fullname: 'Kevin Zhu'
-  // },
-  // {
-  //   comment: 'Awesome question',
-  //   message_id: '3',
-  //   id: '99fcb1df-8dc5-4af4-9e0f-c56d2c3bcb81',
-  //   highlighted_message: 'What kind of customization options are available?',
-  //   transcript_id: '1',
-  //   user_fullname: 'Kevin Zhu'
-  // }
-]
 
 export default function Transcript() {
   const { isLoaded, isSignedIn, user } = useUser();
   const [transcript, setTranscript] = useState(transcriptData);
   const [section, setSection] = useState<"comments" | "chatbot">("comments");
-  const [comments, setComments] = useState<DbComment[]>(testComments);
+  const [comments, setComments] = useState<DbComment[]>([]);
   const [commentForm, setCommentForm] = useState<Comment>(emptyCommentForm);
   const [commentFormOpen, setCommentFormOpen] = useState(false);
   const [hoveredComment, setHoveredComment] = useState<DbComment | null>(null);
+
+  const [messages, setMessages] = useState<string[]>(["Hi there! How can I assist you today?"]);
+  const router = useRouter()
 
   // console.log("IN PARENT:", hoveredComment);
 
@@ -87,7 +65,13 @@ export default function Transcript() {
     e.preventDefault();
 
     if (!isLoaded || !isSignedIn) {
+      const signInUrl = process.env.NEXT_PUBLIC_CLERK_SIGN_IN_URL;
+  
+      if (signInUrl) {
+        router.push(signInUrl);
+      }
       alert("You need to be signed in to comment");
+  
       return;
     }
 
@@ -112,6 +96,7 @@ export default function Transcript() {
   useEffect(() => {
     getComments().then((comments) => {
       setComments(comments);
+      console.log(comments)
     });
   }, []);
 
@@ -155,7 +140,7 @@ export default function Transcript() {
             Comments
           </button>
         </div>
-        {section === "chatbot" && <ChatbotSection />}
+        {section === "chatbot" && <ChatbotSection messages={messages} setMessages={setMessages} comments={comments}/>}
         {section === "comments" && (
           <CommentSection
             comments={comments}
