@@ -18,15 +18,19 @@ export default function Navbar() {
           </Link>
         </div>
         <Link href={"/"}>
-          <h3>VoiceTaker</h3>
+          <h3 className="text-2xl font-bold">VoiceTaker</h3>
         </Link>
       </div>
       <div>
         <SignedOut>
-          <SignInButton />
+          <SignInButton>
+            <Button className="text-md">Sign In</Button>
+          </SignInButton>
         </SignedOut>
         <SignedIn>
-          <UserButton />
+          <UserButton>
+            <Button>Log Out</Button>
+          </UserButton>
         </SignedIn>
       </div>
     </nav>

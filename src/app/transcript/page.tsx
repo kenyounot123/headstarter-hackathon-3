@@ -120,7 +120,7 @@ export default function Transcript() {
       <div ref={commentFormRef} style={{ display: 'none', zIndex:999}}>
         <CommentForm onCancel={handleCancel} comments={comments} setComments={setComments} highlightedText={selectedText}/>
       </div>
-      <div className="relative flex-1 bg-gray-100 p-4 border-b md:border-r md:border-gray-300">
+      <div className="relative flex-1 bg-gray-100 p-4 md:border-r md:border-gray-300">
         <h2 className="text-2xl font-semibold mb-4">Main Transcript</h2>
         <div className="transcript max-h-[90%] overflow-y-auto">
           {transcript.map((entry, index) => (
